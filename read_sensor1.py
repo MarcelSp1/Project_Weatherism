@@ -4,27 +4,30 @@ import adafruit_dht
 import csv
 from datetime import datetime
 
+# Funktion um den Sensor auszulesen
 def get_temp_hmd():
     #Den DHT22 initiieren
     dhtDevice = adafruit_dht.DHT22(board.D2)
 
+    # Lese den Sensor so lange aus, bis die Daten abgerufen werden können
     while True:
         try:
-            #Temperatur in Grad Celsius
+            # Temperatur in Grad Celsius
             temperature_c = dhtDevice.temperature
-            #Luftfeuchtigkeit
+            # Luftfeuchtigkeit
             humidity = dhtDevice.humidity
             return temperature_c, humidity
 
         except RuntimeError as error:
-            #Wenn Error: einfach nochmal versuchen (-> schwieriges Auslesen)
+            # Wenn Error: einfach nochmal versuchen (-> schwieriges Auslesen)
             print(error.args[0])
             time.sleep(2.0)
             continue
         except Exception as error:
             dhtDevice.exit()
             raise error
-        
+
+# Notiere das Datum, die Zeit, die Luftfeuchtigkeit und die Temperatur in csv_data/humidity_and_temperature.csv
 def note_data(temp, hmd):
     temperature, humidity = temp, hmd
     date = datetime.now()
@@ -35,16 +38,16 @@ def note_data(temp, hmd):
         writer = csv.writer(file)
         writer.writerows(data)
 
+# Notiere alle zwei Minuten die dafür ausgelesenen Daten
 def main_cycle():
     while True:
         prep_time = datetime.now()
-        time_minute = prep_time.time()
-        time_minute = str(time_minute)
-        time_minute = time_minute.split(":")
-        time_minute = int(time_minute[1])
+        prep_time = prep_time.time()
+        prep_time = str(prep_time)
+        prep_time = prep_time.split(":")
+        time_minute = int(prep_time[1])
         if (time_minute % 2 == 0):
             temp, hmd = get_temp_hmd()
             note_data(temp, hmd)
-            print(time_minute)
 
 main_cycle()
