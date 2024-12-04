@@ -1,4 +1,5 @@
-# Weatherism
+# Project Weatherism
+Project Weatherism ist der Code für die Wetterstation und das Abfragen der Wettervorhersage zugehörig zu P5 von Marcel und Erek.
 
 ## read_sensor1.py
 **Funktion:** Liest den Temperatursensor alle zwei Minuten aus und notiert die gelesenen Werte in csv_data/humidity_and_temperature.csv
