@@ -1,6 +1,6 @@
-import openmeteo_requests
 import requests
 import pandas as pd
+import openmeteo_requests
 from retry_requests import retry
 
 # Erstelle den Open Meteo API-Client mit erneutem Versuch, falls Open Meteo nicht die benötigte Antwort sendet
