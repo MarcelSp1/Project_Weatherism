@@ -32,11 +32,8 @@ hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
 hourly_relative_humidity_2m = hourly.Variables(1).ValuesAsNumpy()
 hourly_rain = hourly.Variables(2).ValuesAsNumpy()
 
-##
-#
-#
-#
-##
+# hourly_data stellt vorerst nur ein dictionary (Variablentyp) da
+# Im Folgenden wird die Spalte des Erstellungsdatum, bzw. Uhrzeit erstellt und in hourly_data gespeichert
 hourly_data = {"date": pd.date_range(
 	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
 	end = pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True),
@@ -44,7 +41,7 @@ hourly_data = {"date": pd.date_range(
 	inclusive = "left"
 )}
 
-#
+# Die Spalten für Temperatur, Luftfeuchtigkeit und Regen werden jeweils hinter die Spalte für das Erstellungsdatum gehangen.
 hourly_data["Temperatur"] = hourly_temperature_2m
 hourly_data["Luftfeuchtigkeit"] = hourly_relative_humidity_2m
 hourly_data["Regen"] = hourly_rain
