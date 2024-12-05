@@ -12,3 +12,4 @@ Project Weatherism ist der Code für die Wetterstation und das Abfragen der Wett
 1. `cd [PFAD]/Weatherism/`  wechselt in das Verzeichnis von Weatherism. [PFAD] muss gegen den Speicherort des Weatherismordners ausgetauscht werden.
 2. `venv\Scripts\activate`      startet das virtual environment.
 3. `python write_forecast.py`   führt die write_forecast.py aus.
+test
