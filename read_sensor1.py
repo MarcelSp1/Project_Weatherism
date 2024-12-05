@@ -34,7 +34,7 @@ def note_data(temp, hmd):
     extracted_date = date.date()
     time = date.time()
     data = [[extracted_date, time, humidity, temperature]]
-    with open("csv_data/humidity_and_temperature.csv", mode="w", newline="", encoding="utf-8") as file:
+    with open("csv_data/humidity_and_temperature.csv", mode="a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerows(data)
 
