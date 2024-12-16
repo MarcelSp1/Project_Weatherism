@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Der Niederschlagssensor wird wie ein Knopf behandelt, der jedes Mal bei Kippen der Regenwippe gedrückt wird
 # An welchem gpio-Pin der Niederschlagssensor angeschlossen ist, wird in der Variable sensor gespeichert
-sensor = Button(6)
+sensor = Button(6, bounce_time=0.05)
 
 # on_active() fasst zusammen, was bei Aktivierung des Niederschlagssensors passiert
 def on_active():
@@ -23,5 +23,6 @@ def on_active():
         writer = csv.writer(file)
         writer.writerows(data)  # Daten schreiben
 
-sensor.when_pressed = on_active()
-sensor.wait_for_press()
+sensor.when_pressed = on_active
+while True:
+    sensor.wait_for_press()
