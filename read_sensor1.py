@@ -58,7 +58,9 @@ def note_data(temp, hmd):
 # Notiere alle zwei Minuten die dafür ausgelesenen Daten
 def main_cycle():
     device_port = initialize_device()
-    
+    date = datetime.now()
+    print(date, " System Eins gestartet.")
+
     while True:
         if device_port is None:
             initialize_device()

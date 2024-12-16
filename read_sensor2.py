@@ -24,5 +24,7 @@ def on_active():
         writer.writerows(data)  # Daten schreiben
 
 sensor.when_pressed = on_active
+date = datetime.now()
+print(date, " System Zwei gestartet.")
 while True:
     sensor.wait_for_press()
