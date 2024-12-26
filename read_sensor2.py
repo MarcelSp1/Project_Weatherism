@@ -19,7 +19,7 @@ def on_active():
     # Fasse das Datum, die Uhrzeit und die Menge in einer Liste mit dem Namen data zusammen
     data = [[extracted_date, time, amount]]
     # Schreibe die Daten in csv_data/rainfall.csv
-    with open("csv_data/rainfall.csv", mode="a", newline="", encoding="utf-8") as file:
+    with open("/home/marcel/Weatherism/csv_data/rainfall.csv", mode="a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerows(data)  # Daten schreiben
 

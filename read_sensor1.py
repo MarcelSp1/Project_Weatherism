@@ -1,3 +1,4 @@
+
 import time
 import board
 import adafruit_dht
@@ -50,7 +51,7 @@ def note_data(temp, hmd):
     extracted_date = date.date()
     time = date.time()
     data = [[extracted_date, time, humidity, temperature]]
-    with open("csv_data/humidity_and_temperature.csv", mode="a", newline="", encoding="utf-8") as file:
+    with open("/home/marcel/Weatherism/csv_data/humidity_and_temperature.csv", mode="a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerows(data)
 
@@ -60,7 +61,7 @@ def main_cycle():
     device_port = initialize_device()
     date = datetime.now()
     print(date, " System Eins gestartet.")
-
+    
     while True:
         if device_port is None:
             initialize_device()
@@ -75,7 +76,7 @@ def main_cycle():
         if (time_minute % 2 == 0):
             temp, hmd = get_temp_hmd(device_port)
             note_data(temp, hmd)
-            time.sleep(60.0)
+            time.sleep(110.0)
 
 
 main_cycle()
