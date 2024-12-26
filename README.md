@@ -1,4 +1,4 @@
-# Project Weatherism
+# - Kinda deprecated! - Project Weatherism
 Project Weatherism ist der Code für die Wetterstation und das Abfragen der Wettervorhersage zugehörig zur P5 von Marcel und Erek.
 
 ## read_sensor1.py
