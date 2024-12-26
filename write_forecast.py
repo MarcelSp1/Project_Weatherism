@@ -73,6 +73,5 @@ def main():
 	params, openmeteo, url = defineParam()
 	response = getForecast(openmeteo, url, params)
 	processData(response)
-	print("Test1")
 
 main()
