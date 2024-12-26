@@ -17,7 +17,7 @@ def defineParam():
 		"latitude": 53.03,
 		"longitude": 8.52,
 		"hourly": ["temperature_2m", "relative_humidity_2m", "rain"],
-		"forecast_days": 1
+		"forecast_days": 2
 	}
 	return params, openmeteo, url
 
