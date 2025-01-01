@@ -24,11 +24,11 @@ for _, row in data.iterrows():
 errors = []
 log_file = './evaluation/errors.log'
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
-with open(log_file, 'a') as log:
+with open(log_file, 'a', encoding='utf-8') as log:
     for date, hours in result.items():
         for hour, values in hours.items():
             if len(values['humidity']) < 30:
-                error_message = f"Nicht genug Daten fuer {date} um {hour}. Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
+                error_message = f"Nicht genug Daten für {date} um {hour} Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
                 errors.append(error_message)
                 log.write(error_message)
     
