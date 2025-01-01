@@ -28,7 +28,7 @@ with open(log_file, 'a') as log:
     for date, hours in result.items():
         for hour, values in hours.items():
             if len(values['humidity']) < 30:
-                error_message = f"Nicht genug daten fuer {date} Stunde {hour}. Nur {len(values['humidity'])} Daten gefunden.\n"
+                error_message = f"Nicht genug Daten fuer {date} um {hour}. Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
                 errors.append(error_message)
                 log.write(error_message)
     
