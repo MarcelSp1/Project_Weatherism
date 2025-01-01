@@ -1,0 +1,8 @@
+Dies wird im Nachhinein wieder gelöscht.
+
+Aktuell werden die Werte Stündlich in Arrays gesteckt, falls zu wenig vorhanden sind wird dies nebenbei in Errors.log eingetragen.
+Es folgt die Ausrechnung der Standardabweichung und diese wird dann eingetragen. Das Erstellen der Json Datei aktuell nur zur 
+veranschaulichung.
+
+Wichtig zu Merken: Lösung finden das bereits ausgelesene Daten nicht erneut durchlaufen o. Error auf Mode 'w' wechseln das jedes mal
+alle Errors neu geschrieben werden und daten ausgelesen.
