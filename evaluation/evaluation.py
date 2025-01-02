@@ -5,12 +5,13 @@ import os
 # Datei laden
 data = pd.read_csv('./csv_data/humidity_and_temperature.csv')
 
-# Sicherstellen, dass die Zeitangaben richtig formatiert sind
+# Datum und Uhrzeit zusammenfassen in eine Zeile
 data['datetime'] = pd.to_datetime(data['date'] + ' ' + data['time'])
 data['hour'] = data['datetime'].dt.hour
 data['date'] = data['datetime'].dt.date
 
-# Ergebnisstruktur vorbereiten
+# LÖSCHEN
+# Ergebnisstruktur vorbereiten 
 result = defaultdict(lambda: defaultdict(lambda: {"humidity": [], "temperature": []}))
 
 # Werte nach Datum und Stunde gruppieren und zusammenfassen
@@ -20,11 +21,11 @@ for _, row in data.iterrows():
     result[date][hour]['humidity'].append(row['humidity'])
     result[date][hour]['temperature'].append(row['temperature'])
 
-# Prüfen, ob genügend Daten vorhanden sind und Fehler ausgeben, falls nicht
+# Prüfen, ob genügend Daten vorhanden sind und Fehler ausgeben, falls nicht im Error log angeben
 errors = []
 log_file = './evaluation/errors.log'
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
-with open(log_file, 'a', encoding='utf-8') as log:
+with open(log_file, 'w', encoding='utf-8') as log:
     for date, hours in result.items():
         for hour, values in hours.items():
             if len(values['humidity']) < 30:
@@ -33,13 +34,13 @@ with open(log_file, 'a', encoding='utf-8') as log:
                 log.write(error_message)
     
 
-
+#------------------------ Ab hier Löschen
 # # Ergebnis anzeigen (als Beispiel für ein Datum)
 example_date = next(iter(result))
 example_output = {example_date: result[example_date]}
 print("Example output:", example_output)
 
-# # Speichern in einer Datei für weitere Verwendung
+# Speichern in einer Datei für weitere Verwendung
 import json
 output_file = './evaluation/grouped_data.json'
 with open(output_file, 'w') as f:
