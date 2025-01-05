@@ -1,7 +1,3 @@
 Dies wird im Nachhinein wieder gelöscht.
 
-Aktuell werden die Werte Stündlich in Arrays gesteckt, falls zu wenig vorhanden sind wird dies nebenbei in Errors.log eingetragen.
-Es folgt die Ausrechnung der Standardabweichung und diese wird dann eingetragen. Das Erstellen der Json Datei aktuell nur zur 
-veranschaulichung.
-
-Es folgen: Stündliche durchschnitte, und Verbesserung der Fehlersuche.
+Es folgen: Rechnen mit den Stündlichen durchschnitten, d.h. hinzufügen der Vorhersage.

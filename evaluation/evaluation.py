@@ -11,7 +11,6 @@ data['datetime'] = pd.to_datetime(data['date'] + ' ' + data['time'])
 data['hour'] = data['datetime'].dt.hour
 data['date'] = data['datetime'].dt.date
 
-# LÖSCHEN
 # Ergebnisstruktur vorbereiten 
 result = defaultdict(lambda: defaultdict(lambda: {"humidity": [], "temperature": []}))
 
@@ -31,7 +30,6 @@ def error_count():
             for hour, values in hours.items():
                 if len(values['humidity']) < 30:
                     error_message = f"Nicht genug Daten für {date} um {hour} Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
-                    errors.append(error_message)
                     log.write(error_message)
 
 data = []
@@ -43,6 +41,4 @@ with open(hourly_data, 'w', encoding='utf-8') as csv:
             values['average_humidity'] = sum(values['humidity']) / len(values['humidity'])
             values['average_temperature'] = sum(values['temperature']) / len(values['temperature'])
             hourly= f"{date}, {hour}:00 {values['average_temperature']};{values['average_humidity']}\n"
-            data.append(hourly)
             csv.write(hourly)
-
