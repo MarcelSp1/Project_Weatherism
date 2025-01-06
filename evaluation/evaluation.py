@@ -3,8 +3,10 @@ from collections import defaultdict
 import os
 import csv
 
+print("Vorgang wird gestartet.")
+
 # Datei laden
-data = pd.read_csv('./csv_data/humidity_and_temperature.csv')
+data = pd.read_csv('raw_data/modified_humidity_and_temperature.csv')
 
 # Datum und Uhrzeit zusammenfassen in eine Zeile
 data['datetime'] = pd.to_datetime(data['date'] + ' ' + data['time'])
@@ -23,7 +25,7 @@ for _, row in data.iterrows():
 
 def error_count():
     errors = []
-    log_file = './evaluation/errors.log'
+    log_file = 'results/errors.log'
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     with open(log_file, 'w', encoding='utf-8') as log:
         for date, hours in result.items():
@@ -33,7 +35,7 @@ def error_count():
                     log.write(error_message)
 
 data = []
-hourly_data = './csv_data/hourly_data.csv'
+hourly_data = 'results/hourly_data.csv'
 with open(hourly_data, 'w', encoding='utf-8') as csv:
     for date, hours in result.items():
         for hour, values in hours.items():
@@ -42,3 +44,5 @@ with open(hourly_data, 'w', encoding='utf-8') as csv:
             values['average_temperature'] = sum(values['temperature']) / len(values['temperature'])
             hourly= f"{date}, {hour}:00 {values['average_temperature']};{values['average_humidity']}\n"
             csv.write(hourly)
+
+print("Vorgang wurde erfolgreich abgeschlossen.")
