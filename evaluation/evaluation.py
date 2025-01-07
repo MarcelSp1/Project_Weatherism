@@ -24,7 +24,6 @@ for _, row in data.iterrows():
     result[date][hour]['temperature'].append(row['temperature'])
 
 def error_count():
-    errors = []
     log_file = 'results/errors.log'
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     with open(log_file, 'w', encoding='utf-8') as log:
