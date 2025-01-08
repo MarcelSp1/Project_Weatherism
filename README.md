@@ -14,5 +14,5 @@ Wurde zur Ausführung auf dem RPi 4B geschrieben.
 Fragt die tägliche Wettervorhersage ab und trägt diese in csv_data/wetter.csv ein.
 Wurde zur Ausführung auf allen Python-unterstützenden Geräten geschrieben und ruft in unserer Konfiguration stündlich die Wettervorhersage für den jeweiligen und nächsten Tag ab.
 ## evaluation.py
-Wertet die Daten in evaluation/raw_data/modified_humidity_and_temperature.csv aus.
-Testet bisher nur auf fehlende Daten und errechnet die stündlichen Durchschnitte (Stand 08.11.2025 17:46 Uhr).
+Wertet alle Daten in evaluation/raw_data aus.
+Testet bisher nur auf fehlende Daten und errechnet die stündlichen Durchschnitte und fügt Regen werte hinzu (Stand 08.01.2025 21:52 Uhr).
