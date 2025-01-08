@@ -1,14 +1,10 @@
 import pandas as pd
 from collections import defaultdict
-import os
-import csv
-
 
 # Werte pro Stunde zählen.
 # Falls keine 30 vorhanden sind, wird dies in evaluation/results/errors.log vermerkt.
 def error_count(result):
     log_file = 'evaluation/results/errors.log'
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
     with open(log_file, 'w', encoding='utf-8') as log:
         for date, hours in result.items():
             for hour, values in hours.items():
