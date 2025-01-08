@@ -42,7 +42,7 @@ def main():
     #Durschnittswerte pro Stunde errechnen.
     hourly_data = 'evaluation/results/hourly_data.csv'
     with open(hourly_data, 'w', encoding='utf-8') as csv_file:
-        csv_file.write("Date, Hour, Average Temperature(in °C), Average Humidity(in g/m³), Rainfall(mm/m²)\n")
+        csv_file.write("Date, Hour, Average Temperature(in °C), Average Humidity(in %), Rainfall(mm/m²)\n")
         for date, hours in result.items():
             for hour, values in hours.items():
                 error_count(result)  # Fehlerprüfung für jede Stunde
