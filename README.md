@@ -1,15 +1,18 @@
-# - Kinda deprecated! - Project Weatherism
-Project Weatherism ist der Code für die Wetterstation und das Abfragen der Wettervorhersage zugehörig zur P5 von Marcel und Erek.
+# **Project Weatherism**
+Unter dem Titel Project Weatherism finden sich die, im Zuge von P5 entstandenen, Ergebnisse von Marcel und Erek.
+Das umfasst den Code zur Erhebung und Auswertung der Daten sowie die dadurch entstandenen Daten und einen Schaltplan zum Aufbau der Wetterstation.
 
+
+# Funktionen
 ## read_sensor1.py
-**Funktion:** Liest den Temperatursensor alle zwei Minuten aus und notiert die gelesenen Werte in csv_data/humidity_and_temperature.csv
+Liest den Temperatursensor alle zwei Minuten aus und notiert die gelesenen Werte in csv_data/humidity_and_temperature.csv.
+Wurde zur Ausführung auf dem RPi 4B geschrieben.
 ## read_sensor2.py
-**Funktion:** Liest dauerhaft den Niederschlagssensor aus und trägt bei dessen Aktivierung die Werte in csv_data/rainfall.csv ein
+Liest dauerhaft den Niederschlagssensor aus und trägt bei dessen Aktivierung die Werte in csv_data/rainfall.csv ein.
+Wurde zur Ausführung auf dem RPi 4B geschrieben.
 ## write_forecast.py
-**Funktion:** Fragt die tägliche Wettervorhersage ab und trägt diese in csv_data/wetter.csv ein
-
-**Ausführung:**
-*Die folgenden Befehle in das Terminal eingeben*
-1. `cd [PFAD]/Weatherism/`  wechselt in das Verzeichnis von Weatherism. [PFAD] muss gegen den Speicherort des Weatherismordners ausgetauscht werden.
-2. `venv\Scripts\activate`      startet das virtual environment.
-3. `python write_forecast.py`   führt die write_forecast.py aus.
+Fragt die tägliche Wettervorhersage ab und trägt diese in csv_data/wetter.csv ein.
+Wurde zur Ausführung auf allen Python-unterstützenden Geräten geschrieben und ruft in unserer Konfiguration stündlich die Wettervorhersage für den jeweiligen und nächsten Tag ab.
+## evaluation.py
+Wertet die Daten in evaluation/raw_data/modified_humidity_and_temperature.csv aus.
+Testet bisher nur auf fehlende Daten und errechnet die stündlichen Durchschnitte (Stand 08.11.2025 17:46 Uhr).
