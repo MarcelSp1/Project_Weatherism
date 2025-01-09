@@ -59,7 +59,7 @@ def main():
         if date in result and hour in result[date]:
             result[date][hour]['rainfall'] += row['amount']
 
-#Werte Final zur Weiterverarbeitung in evaluation/results/hourly_data.csv notieren.
+    # Werte Final zur Weiterverarbeitung in evaluation/results/hourly_data.csv notieren.
     with open(hourly_data, 'a', encoding='utf-8') as csv_file:
         for date, hours in result.items():
             for hour, values in hours.items():
