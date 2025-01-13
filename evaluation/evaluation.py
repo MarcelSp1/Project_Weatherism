@@ -13,7 +13,7 @@ def error_count(result):
                     log.write(error_message)
 
 
-def main():
+def preparation():
     print("Vorgang wird gestartet.")
 
     # Dateien laden.
@@ -66,7 +66,21 @@ def main():
                 avg_temperature = values.get('average_temperature', 0)
                 avg_humidity = values.get('average_humidity', 0)
                 rainfall = values['rainfall']
-                csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
+                if hour<10:
+                    csv_file.write(f"{date},0{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
+                else:
+                    csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")
     print("Vorgang wurde erfolgreich abgeschlossen.")
 
+def calculation():
+    data = pd.read_csv('evaluation/results/hourly_data.csv')
+    forecast = pd.read_csv('csv_data/wetter.csv')
+
+    forecast[['Datum', 'Uhrzeit']] = forecast['date'].str.split(' ', expand=True)
+    forecast['Uhrzeit'] = forecast['Uhrzeit'].str.replace(r'\+.*$', '', regex=True)
+
+    print(forecast)
+def main():
+    preparation()
+    #calculation()
 main()
