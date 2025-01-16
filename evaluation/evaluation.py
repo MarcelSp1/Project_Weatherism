@@ -73,14 +73,40 @@ def preparation():
     print("Vorgang wurde erfolgreich abgeschlossen.")
 
 def calculation():
-    data = pd.read_csv('evaluation/results/hourly_data.csv')
+    # Vorhandene Daten laden
+    hourly_data_path = 'evaluation/results/hourly_data.csv'
+    hourly_data = pd.read_csv(hourly_data_path)
+    hourly_data.columns = hourly_data.columns.str.strip()
+
+    # Debug: Überprüfen der geladenen Daten
+    print("Geladene hourly_data Spalten:", hourly_data.columns)
+    print("Erste Zeilen von hourly_data:\n", hourly_data.head())
+
+    # Neue Daten laden
     forecast = pd.read_csv('csv_data/wetter.csv')
+    forecast[['Date', 'Hour']] = forecast['date'].astype(str).str.split(' ', expand=True)
+    forecast['Hour'] = forecast['Hour'].str.replace(r'\+.*$', '', regex=True)
 
-    forecast[['Datum', 'Uhrzeit']] = forecast['date'].str.split(' ', expand=True)
-    forecast['Uhrzeit'] = forecast['Uhrzeit'].str.replace(r'\+.*$', '', regex=True)
 
-    print(forecast)
+    # Werte zusammenführen
+    for _, row in forecast.iterrows():
+        date = row['date']
+        hour = row['hour']
+        # Abgleich nach Datum und Stunde
+        match = (hourly_data['Date'] == str) & (hourly_data['Hour'] == f"{hour}")
+        if any(match):
+            idx = hourly_data.index[match][0]
+            print(f"Match gefunden: {date} {hour}:00")  # Debug
+            hourly_data.at[idx, 'Forecasted Temperature'] = row['Temperatur']
+            hourly_data.at[idx, 'Forecasted Humidity'] = row['Luftfeuchtigkeit']
+            hourly_data.at[idx, 'Forecasted Rainfall'] = row['Regen'] * 136.9863
+        else:
+            print(f"Kein Match gefunden: {date} {hour}:00")  # Debug
+
+    # Aktualisierte Daten speichern
+    hourly_data.to_csv(hourly_data_path, index=False)
+    print("Vorhersagedaten erfolgreich hinzugefügt.")
 def main():
     preparation()
-    #calculation()
+    calculation()
 main()
