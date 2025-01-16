@@ -70,8 +70,8 @@ def processData(response):
 	hourly_dataframe.to_csv(csv_file, mode='a', header=False, index=False)
 	
 def main():
-	params, openmeteo, url = defineParam()
-	response = getForecast(openmeteo, url, params)
-	processData(response)
+	params, openmeteo, url = defineParam() # Definiere Parameter
+	response = getForecast(openmeteo, url, params) # Rufe Vorhersage mit definierten Parametern ab
+	processData(response) # Verarbeite (entspricht Speichere) die abgerufenen Daten
 
 main()
