@@ -6,11 +6,23 @@ from collections import defaultdict
 def error_count(result):
     log_file = 'evaluation/results/errors.log'
     with open(log_file, 'w', encoding='utf-8') as log:
+        # Iterierung durch die Daten
         for date, hours in result.items():
+            expected_hour = 0
+            # Iterierung durch die Stunden pro Datum
             for hour, values in hours.items():
-                if len(values['humidity']) < 30:
-                    error_message = f"Nicht genug Daten für {date} um {hour} Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
+                # Überprüfung, ob eine oder mehrere Stunden fehlen
+                while expected_hour < hour:
+                    error_message = f"Keine Daten für {date} {expected_hour}. Uhr.\n"
                     log.write(error_message)
+                    expected_hour += 1
+                # Überprüfung, ob die 30 Daten der Stunde komplett sind
+                if len(values['humidity']) < 30:
+                    error_message = f"Nicht genug Daten für {date} um {hour}. Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
+                    log.write(error_message)
+                expected_hour += 1
+                
+
 
 
 def preparation():

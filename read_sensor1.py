@@ -60,22 +60,25 @@ def main_cycle():
     device_port = initialize_device()
     date = datetime.now()
     print(date, " System Eins gestartet.")
-    
     while True:
+        # Checken, ob der Sensor noch initialisiert ist
+        # Wenn nicht, initialisieren ihn erneut
         if device_port is None:
             initialize_device()
-        
+
         # Einholen des Datums und Extrahierung der Minutenangabe
         prep_time = datetime.now()
         prep_time = prep_time.time()
         prep_time = str(prep_time)
         prep_time = prep_time.split(":")
         time_minute = int(prep_time[1])
-        # Ausführung wenn es sich um eine gerade Minute handelt => Ausführung alle zwei Minuten
+        
+        # Ausführung wenn es sich um eine gerade Minute handelt 
+        # => Ausführung alle zwei Minuten
         if (time_minute % 2 == 0):
             temp, hmd = get_temp_hmd(device_port)
             note_data(temp, hmd)
-            time.sleep(110.0)
+            time.sleep(110.0) # Schlafen, um CPU Ressourcen zu sparen
 
 
 main_cycle()
