@@ -98,11 +98,17 @@ def calculation():
     with open(sorted, 'w', encoding='utf-8') as csv_file: 
         #Hinzufügen der Struktur
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
+        
+        #Vorbereiten der Variablen für Zuordnung
         for _, row in hourly_data.iterrows():
             date = row['Date']
             hour = row['Hour']
             datetime = date+" "+hour
-            csv_file.write(f"{datetime},,,,,,,,,,,,\n")
+            for _, row in forecast.iterrows():
+                f_date = row['Date']
+                f_hour = row['Hour']
+
+         
 
 
 def main():
