@@ -11,7 +11,7 @@ Wurde zur Ausführung auf dem RPi 4B geschrieben.
 Liest dauerhaft den Niederschlagssensor aus und trägt bei dessen Aktivierung die Werte in csv_data/rainfall.csv ein.
 Wurde zur Ausführung auf dem RPi 4B geschrieben.
 ## write_forecast.py
-Fragt die tägliche Wettervorhersage ab und trägt diese in csv_data/wetter.csv ein.
+Fragt die tägliche Wettervorhersage ab und trägt diese in csv_data/weather.csv ein.
 Wurde zur Ausführung auf allen Python-unterstützenden Geräten geschrieben und ruft in unserer Konfiguration stündlich die Wettervorhersage für den jeweiligen und nächsten Tag ab.
 ## evaluation.py
 Wertet alle Daten in evaluation/raw_data aus.
