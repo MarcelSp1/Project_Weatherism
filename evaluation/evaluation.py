@@ -102,7 +102,7 @@ def calculation():
             date = row['Date']
             hour = row['Hour']
             datetime = date+" "+hour
-            csv_file.write(f"{datetime},,,,,,,,,,,,,\n")
+            csv_file.write(f"{datetime},,,,,,,,,,,,\n")
 
 
 def main():
