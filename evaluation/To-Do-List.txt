@@ -2,4 +2,4 @@ Dies wird im Nachhinein wieder gelöscht.
 
 Es folgen: Rechnen mit den Stündlichen durchschnitten, d.h. hinzufügen der Vorhersage.
 
-KOORDINATEN LÖSCHEN
+KOORDINATEN LÖSCHEN 

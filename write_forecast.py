@@ -66,7 +66,7 @@ def processData(response):
 	hourly_dataframe = hourly_dataframe[cols]
 
 	# Schreibe den Zuvor erstellten und richtig sortierten Dataframe zur Abspeicherung in csv_data/wetter.csv
-	csv_file = 'csv_data/wetter.csv'
+	csv_file = 'csv_data/weather.csv'
 	hourly_dataframe.to_csv(csv_file, mode='a', header=False, index=False)
 	
 def main():

@@ -58,11 +58,10 @@ def preparation():
         for date, hours in result.items():
             for hour, values in hours.items():
                 error_count(result)  # Fehlerprüfung für jede Stunde
-                if values['humidity'] and values['temperature']:
-                    avg_humidity = sum(values['humidity']) / len(values['humidity'])
-                    avg_temperature = sum(values['temperature']) / len(values['temperature'])
-                    result[date][hour]['average_humidity'] = avg_humidity
-                    result[date][hour]['average_temperature'] = avg_temperature
+                avg_humidity = sum(values['humidity']) / len(values['humidity'])
+                avg_temperature = sum(values['temperature']) / len(values['temperature'])
+                result[date][hour]['average_humidity'] = avg_humidity
+                result[date][hour]['average_temperature'] = avg_temperature
 
      # Regenwerte hinzufügen.
     for _, row in rain.iterrows():
@@ -91,13 +90,19 @@ def calculation():
     hourly_data.columns = hourly_data.columns.str.strip()
 
     # Neue Daten laden
-    forecast = pd.read_csv('csv_data/wetter.csv')
+    forecast = pd.read_csv('csv_data/weather.csv')
     forecast['date'] = forecast['date'].str.replace(r'\+.*$', '', regex=True)
     forecast[['Date', 'Hour']] = forecast['date'].astype(str).str.split(' ', expand=True)
 
-    evaluation = 'evaluation/results/evaluated_data.csv'
-    with open(evaluation, 'w', encoding='utf-8') as csv_file: 
-        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before,In the moment')
+    sorted = 'evaluation/results/sorted_weather_data.csv'
+    with open(sorted, 'w', encoding='utf-8') as csv_file: 
+        #Hinzufügen der Struktur
+        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
+        for _, row in hourly_data.iterrows():
+            date = row['Date']
+            hour = row['Hour']
+            datetime = date+" "+hour
+            csv_file.write(f"{datetime},\n")
 
 
 def main():
