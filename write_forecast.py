@@ -48,9 +48,9 @@ def processData(response):
 	)}
 
 	# Die Spalten für Temperatur, Luftfeuchtigkeit und Regen werden jeweils hinter die Spalte für das Erstellungsdatum gehangen.
-	hourly_data["Temperatur"] = hourly_temperature_2m
-	hourly_data["Luftfeuchtigkeit"] = hourly_relative_humidity_2m
-	hourly_data["Regen"] = hourly_rain
+	hourly_data["temperature"] = hourly_temperature_2m
+	hourly_data["humidity"] = hourly_relative_humidity_2m
+	hourly_data["rain"] = hourly_rain
 
 	# Spalte mit Datum der Erzeugung hinten anhängen
 	generated_at = pd.Timestamp.now()

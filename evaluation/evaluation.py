@@ -100,18 +100,40 @@ def calculation():
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
         
         #Vorbereiten der Variablen für Zuordnung
-        for _, row in hourly_data.iterrows():
-            date = row['Date']
-            hour = row['Hour']
-            datetime = date+" "+hour
-            for _, row in forecast.iterrows():
-                f_date = row['Date']
-                f_hour = row['Hour']
+        counter = 1
 
-         
+        for _, row in hourly_data.iterrows():
+                date = row['Date']
+                hour = row['Hour']
+                datetime = date+" "+hour
+
+                csv_file.write(f'{datetime},')
+                if datetime == '2025-01-10 00:00':
+                    break
+                for _, row in forecast.iterrows():
+
+                    f_date = row['Date']
+                    f_hour_unfixed = row['Hour']
+                    f_hour = f_hour_unfixed[:-3]
+
+                    f_temp = row['temperature']
+                    f_hum = row['humidity']
+                    f_rain = row['rain']
+                    f_data = f'{f_temp} {f_hum} {f_rain}'
+                    if f_date == date and f_hour == hour:
+                        if counter!=12:
+                            csv_file.write(f'{f_data},')
+                            counter=counter+1
+                        else:
+                            csv_file.write(f'{f_data}\n')
+                            counter=1
+                            break
+                        
+    print('Vorgang beendet')
 
 
 def main():
     preparation()
     calculation()
+    print('Alles Fertig')
 main()
