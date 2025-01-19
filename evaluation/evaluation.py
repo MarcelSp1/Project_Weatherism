@@ -90,7 +90,7 @@ def calculation():
     hourly_data.columns = hourly_data.columns.str.strip()
 
     # Neue Daten laden
-    forecast = pd.read_csv('csv_data/weather.csv')
+    forecast = pd.read_csv('csv_data/forecast.csv')
     forecast['date'] = forecast['date'].str.replace(r'\+.*$', '', regex=True)
     forecast[['Date', 'Hour']] = forecast['date'].astype(str).str.split(' ', expand=True)
 
