@@ -1,5 +1,5 @@
 Dies wird im Nachhinein wieder gelöscht.
 
-Es folgen: Rechnen mit den Stündlichen durchschnitten, d.h. hinzufügen der Vorhersage.
+Es folgen: Rechnungen mit der Vorhersage
 
-KOORDINATEN LÖSCHEN 
+Wenn alle daten vorhanden sind Löschen des Notfall exits in evaluation.py und Koordinaten entfernen

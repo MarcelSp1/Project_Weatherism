@@ -99,9 +99,8 @@ def calculation():
         #Hinzufügen der Struktur
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
         
-        #Vorbereiten der Variablen für Zuordnung
+        #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
-
         for _, row in hourly_data.iterrows():
                 date = row['Date']
                 hour = row['Hour']
@@ -111,23 +110,26 @@ def calculation():
                 if datetime == '2025-01-10 00:00':
                     break
                 for _, row in forecast.iterrows():
-
+                    #Vorbereiten der Uhrzeit für Späteren Vergleich
                     f_date = row['Date']
                     f_hour_unfixed = row['Hour']
                     f_hour = f_hour_unfixed[:-3]
 
+                    #Daten in einer Variable zusammenfassen für geordnetes runterschreiben
                     f_temp = row['temperature']
                     f_hum = row['humidity']
                     f_rain = row['rain']
                     f_data = f'{f_temp} {f_hum} {f_rain}'
+
+                    #Wenn das Datum der Vorhersage, der aktuellen Reihe Stündlicher Werte entspricht, Vorhersage Werte hinzufügen.
                     if f_date == date and f_hour == hour:
                         if counter!=12:
                             csv_file.write(f'{f_data},')
                             counter=counter+1
-                        else:
+                        else: #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
                             csv_file.write(f'{f_data}\n')
                             counter=1
-                            break
+                            break #Wenn mehr als 12 Vorhersage Werte vorhanden sein sollten, werden diese ignoriert da sie sich um Zeitpunkte danach handeln
                         
     print('Vorgang beendet')
 
