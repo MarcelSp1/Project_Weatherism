@@ -118,7 +118,6 @@ def sorting():
                 f_date = row['Date']
                 f_hour_unfixed = row['Hour']
                 f_hour = f_hour_unfixed[:-3]
-                gen_date = row['gen_date']
                 gen_hour = row['gen_hour']
 
 
