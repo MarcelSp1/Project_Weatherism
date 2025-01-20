@@ -103,7 +103,7 @@ def sorting():
 
     with open(sorted, 'w', encoding='utf-8') as csv_file: 
         #Hinzufügen der Struktur
-        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
+        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
         
         #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
@@ -112,8 +112,7 @@ def sorting():
             hour = row['Hour']
             date_time = date+" "+hour
 
-            if date!='2024-12-27': #Sonderfall da für den 27.12 keine Vorhersagen 12 Stunden vorher vorhanden sind.
-                csv_file.write(f'{date_time},')
+            csv_file.write(f'{date_time},')
             for _, row in forecast.iterrows():
                 #Vorbereiten der Uhrzeit für Späteren Vergleich
                 f_date = row['Date']
@@ -127,29 +126,25 @@ def sorting():
                 f_hum = row['humidity']
                 f_rain = row['rain']
                 f_data = f'{f_temp} {f_hum} {f_rain}'
-
-                if date == '2024-12-27':
-                    break #Sonderfall
-                else:
-                    #Wenn das Datum der Vorhersage dem der aktuellen Reihe Stündlicher Werte entspricht, überprüfen ob es der erste wert in der reihe ist
-                    #Und wenn ja, erst eintragen wenn der erste Wert 12 Stunden vor dem Zeitpunkt ist.
-                    if f_date == date and f_hour == hour:
-                        if counter==1:
-                                gen_time = datetime.strptime(gen_hour, "%H:%M:%S.%f")
-                                hour_time = datetime.strptime(hour, "%H:%M")
-                                difference_time =  hour_time - timedelta(hours=gen_time.hour, minutes=gen_time.minute)
-                                difference = difference_time.strftime("%H:%M")
-                                if difference == "12:00":
-                                    csv_file.write(f'{f_data},')
-                                    counter=counter+1
-                        elif counter == 12:
-                            csv_file.write(f'{f_data}')
-                            counter=1
-                            break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
-                        else:
-                            csv_file.write(f'{f_data},')
-                            counter=counter+1
-                    csv_file.write('\n')
+                #Wenn das Datum der Vorhersage dem der aktuellen Reihe Stündlicher Werte entspricht, überprüfen ob es der erste wert in der reihe ist
+                #Und wenn ja, erst eintragen wenn der erste Wert 12 Stunden vor dem Zeitpunkt ist.
+                if f_date == date and f_hour == hour:
+                    if counter==1:
+                            gen_time = datetime.strptime(gen_hour, "%H:%M:%S.%f")
+                            hour_time = datetime.strptime(hour, "%H:%M")
+                            difference_time =  hour_time - timedelta(hours=gen_time.hour, minutes=gen_time.minute)
+                            difference = difference_time.strftime("%H:%M")
+                            if difference == "12:00":
+                                csv_file.write(f'{f_data},')
+                                counter=counter+1
+                    elif counter == 12:
+                        csv_file.write(f'{f_data}')
+                        counter=1
+                        break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
+                    else:
+                        csv_file.write(f'{f_data},')
+                        counter=counter+1
+            csv_file.write('\n')
     print('Vorgang beendet')
 
 
