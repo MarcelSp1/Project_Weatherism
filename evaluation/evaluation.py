@@ -55,7 +55,7 @@ def preparation():
     #Durschnittswerte pro Stunde errechnen.
     hourly_data = 'evaluation/results/hourly_data.csv'
     with open(hourly_data, 'w', encoding='utf-8') as csv_file:
-        csv_file.write("Date,Hour,Average Temperature(in °C),Average Humidity(in %),Rainfall(mm/m²)\n")
+        csv_file.write("Date,Hour,Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)\n")
         for date, hours in result.items():
             for hour, values in hours.items():
                 error_count(result)  # Fehlerprüfung für jede Stunde
@@ -79,9 +79,9 @@ def preparation():
                 avg_humidity = values.get('average_humidity', 0)
                 rainfall = values['rainfall']
                 if hour<10:
-                    csv_file.write(f"{date},0{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
+                    csv_file.write(f"{date},0{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
                 else:
-                    csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")
+                    csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")
     print("Vorgang wurde erfolgreich abgeschlossen.")
 
 def sorting():
@@ -150,6 +150,6 @@ def sorting():
 
 def main():
     preparation()
-    sorting()
+    #sorting()
     print('Alles Fertig')
 main()
