@@ -147,9 +147,46 @@ def sorting():
             csv_file.write('\n')
     print('Vorgang beendet')
 
+def calculation():
+    data = pd.read_csv('evaluation/results/hourly_data.csv')
+    forecast = pd.read_csv('evaluation/results/sorted_weather_data.csv')
 
+    
+
+    evaluated = 'evaluation/results/evaluated_data.csv'
+    with open(evaluated, 'w', encoding='utf-8') as csv_file:
+        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
+        for _, rows in forecast.iterrows():
+            date_time = rows['Date & Time']
+            csv_file.write(f'{date_time},')
+            for i in range(12):
+                time = 12 - i
+                forecast[['temperature','humidity','rain']] = forecast[f'{time} Hours before'].str.split(' ', expand=True)
+
+                for _, row in data.iterrows():
+                    date = row['Date']
+                    hour = row['Hour']
+                    time = date+" "+hour
+
+                    temp = row['Average Temperature(in °C)']
+                    f_temp = forecast['temperature']
+                    if date_time == time:
+                        print(f_temp)
+                        temp_diff = temp - float(f_temp)
+                        csv_file.write(temp_diff)
+                        
+
+
+
+
+
+            csv_file.write('\n')
+
+
+#Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
-    preparation()
+    #preparation()
     #sorting()
+    calculation()
     print('Alles Fertig')
 main()
