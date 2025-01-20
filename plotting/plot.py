@@ -17,7 +17,6 @@ def plot_temp():
 
     f_df_forecast = pd.DataFrame(columns=["date", "temperature"])
     f_df_forecast['date'] = pd.to_datetime(df_forecast['Date & Time'])
-    f_df_forecast = f_df_forecast.iloc[:-1]
     for i in range(1):
         time = 12 - i
         f_df_forecast['temperature'] = df_forecast[f'{time} Hours before'].str.split().str.get(0)
