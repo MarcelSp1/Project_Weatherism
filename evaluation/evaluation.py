@@ -1,5 +1,6 @@
 import pandas as pd
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 # Werte pro Stunde zählen.
 # Falls keine 30 vorhanden sind, wird dies in evaluation/results/errors.log vermerkt.
@@ -83,7 +84,8 @@ def preparation():
                     csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall*136.9863}\n")
     print("Vorgang wurde erfolgreich abgeschlossen.")
 
-def calculation():
+def sorting():
+    
     # Vorhandene Daten laden
     hourly_data_path = 'evaluation/results/hourly_data.csv'
     hourly_data = pd.read_csv(hourly_data_path)
@@ -93,8 +95,12 @@ def calculation():
     forecast = pd.read_csv('csv_data/forecast.csv')
     forecast['date'] = forecast['date'].str.replace(r'\+.*$', '', regex=True)
     forecast[['Date', 'Hour']] = forecast['date'].astype(str).str.split(' ', expand=True)
+    forecast[['gen_date','gen_hour']] = forecast['generated_at'].astype(str).str.split(' ', expand=True)
 
     sorted = 'evaluation/results/sorted_weather_data.csv'
+
+    print("Beginne mit der Sortierung")
+
     with open(sorted, 'w', encoding='utf-8') as csv_file: 
         #Hinzufügen der Struktur
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
@@ -102,40 +108,49 @@ def calculation():
         #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
         for _, row in hourly_data.iterrows():
-                date = row['Date']
-                hour = row['Hour']
-                datetime = date+" "+hour
+            date = row['Date']
+            hour = row['Hour']
+            date_time = date+" "+hour
 
-                csv_file.write(f'{datetime},')
-                if datetime == '2025-01-10 00:00':
-                    break
-                for _, row in forecast.iterrows():
-                    #Vorbereiten der Uhrzeit für Späteren Vergleich
-                    f_date = row['Date']
-                    f_hour_unfixed = row['Hour']
-                    f_hour = f_hour_unfixed[:-3]
+            csv_file.write(f'{date_time},')
+            for _, row in forecast.iterrows():
+                #Vorbereiten der Uhrzeit für Späteren Vergleich
+                f_date = row['Date']
+                f_hour_unfixed = row['Hour']
+                f_hour = f_hour_unfixed[:-3]
+                gen_date = row['gen_date']
+                gen_hour = row['gen_hour']
 
-                    #Daten in einer Variable zusammenfassen für geordnetes runterschreiben
-                    f_temp = row['temperature']
-                    f_hum = row['humidity']
-                    f_rain = row['rain']
-                    f_data = f'{f_temp} {f_hum} {f_rain}'
 
-                    #Wenn das Datum der Vorhersage, der aktuellen Reihe Stündlicher Werte entspricht, Vorhersage Werte hinzufügen.
-                    if f_date == date and f_hour == hour:
-                        if counter!=12:
-                            csv_file.write(f'{f_data},')
-                            counter=counter+1
-                        else: #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
-                            csv_file.write(f'{f_data}\n')
-                            counter=1
-                            break #Wenn mehr als 12 Vorhersage Werte vorhanden sein sollten, werden diese ignoriert da sie sich um Zeitpunkte danach handeln
-                        
+                #Daten in einer Variable zusammenfassen für geordnetes runterschreiben
+                f_temp = row['temperature']
+                f_hum = row['humidity']
+                f_rain = row['rain']
+                f_data = f'{f_temp} {f_hum} {f_rain}'
+                #Wenn das Datum der Vorhersage dem der aktuellen Reihe Stündlicher Werte entspricht, überprüfen ob es der erste wert in der reihe ist
+                #Und wenn ja, erst eintragen wenn der erste Wert 12 Stunden vor dem Zeitpunkt ist.
+                if f_date == date and f_hour == hour:
+                    if counter==1:
+                            gen_time = datetime.strptime(gen_hour, "%H:%M:%S.%f")
+                            hour_time = datetime.strptime(hour, "%H:%M")
+                            difference_time =  hour_time - timedelta(hours=gen_time.hour, minutes=gen_time.minute)
+                            difference = difference_time.strftime("%H:%M")
+                            if difference == "12:00":
+                                csv_file.write(f'{f_data},')
+                                counter=counter+1
+                    elif counter == 12:
+                        csv_file.write(f'{f_data}')
+                        counter=1
+                        break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
+                    else:
+                        csv_file.write(f'{f_data},')
+                        counter=counter+1
+            csv_file.write('\n')
     print('Vorgang beendet')
 
 
 def main():
     preparation()
-    calculation()
+    sorting()
     print('Alles Fertig')
 main()
