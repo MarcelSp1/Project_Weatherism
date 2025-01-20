@@ -21,7 +21,7 @@ def plot_temp():
     for i in range(1):
         time = 12 - i
         f_df_forecast['temperature'] = df_forecast[f'{time} Hours before'].str.split().str.get(0)
-        plt.plot(f_df_forecast['date'], f_df_forecast['temperature'], marker='o')
+        #plt.plot(f_df_forecast['date'], f_df_forecast['temperature'], marker='o')
     #print(f_df_forecast.dtypes)
     #print(df_temp_hmd.dtypes)
 
@@ -41,4 +41,3 @@ def main():
 
 
 main()
-test
