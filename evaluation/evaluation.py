@@ -7,9 +7,9 @@ from datetime import datetime, timedelta
 def error_count(result):
     log_file = 'evaluation/results/errors.log'
     with open(log_file, 'w', encoding='utf-8') as log:
+        expected_hour = 12
         # Iterierung durch die Daten
         for date, hours in result.items():
-            expected_hour = 0
             # Iterierung durch die Stunden pro Datum
             for hour, values in hours.items():
                 # Überprüfung, ob eine oder mehrere Stunden fehlen
@@ -18,11 +18,11 @@ def error_count(result):
                     log.write(error_message)
                     expected_hour += 1
                 # Überprüfung, ob die 30 Daten der Stunde komplett sind
-                if len(values['humidity']) < 30:
+                if len(values['humidity']) < 29:
                     error_message = f"Nicht genug Daten für {date} um {hour}. Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
                     log.write(error_message)
                 expected_hour += 1
-                
+            expected_hour = 0
 
 
 
@@ -103,7 +103,7 @@ def sorting():
 
     with open(sorted, 'w', encoding='utf-8') as csv_file: 
         #Hinzufügen der Struktur
-        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before, 8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hour before\n')
+        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
         
         #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
