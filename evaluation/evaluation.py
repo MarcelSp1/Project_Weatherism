@@ -174,7 +174,7 @@ def calculation():
                         print(f_temp)
                         temp_diff = temp - float(f_temp)
                         csv_file.write(temp_diff)
-                        
+                        #SONDERFALL 27.12 FEHLT
 
 
 
