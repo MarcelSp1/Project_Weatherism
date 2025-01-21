@@ -157,42 +157,104 @@ def calculation():
     data = pd.read_csv('evaluation/results/hourly_data.csv')
     forecast = pd.read_csv('evaluation/results/sorted_weather_data.csv')
 
-    
-
     evaluated = 'evaluation/results/evaluated_data.csv'
     with open(evaluated, 'w', encoding='utf-8') as csv_file:
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
+
         for _, rows in forecast.iterrows():
+            
             date_time = rows['Date & Time']
             csv_file.write(f'{date_time},')
             for i in range(12):
                 time = 12 - i
                 forecast[['temperature','humidity','rain']] = forecast[f'{time} Hours before'].str.split(' ', expand=True)
 
+
                 for _, row in data.iterrows():
                     date = row['Date']
                     hour = row['Hour']
-                    time = date+" "+hour
+                    d_time = date+" "+hour
 
-                    temp = row['Average Temperature(in °C)']
-                    f_temp = forecast['temperature']
-                    if date_time == time:
-                        print(f_temp)
-                        temp_diff = temp - float(f_temp)
-                        csv_file.write(temp_diff)
-                        #SONDERFALL 27.12 FEHLT
+                    temp = float(row['Average Temperature(in °C)'])
+                    hum = float(row['Average Humidity(in %)'])
+                    rain = float(row['Rainfall(in mm)'])
+
+                    if date_time == d_time:
+                        #Berechnung der Temperaturunterschiede.
+                        f_temp = forecast['temperature'].iloc[i+1]
+                        t_difference = temp - float(f_temp)
+                        csv_file.write(f'{t_difference} ')
 
 
+                        #Berechnung der Luftfeuchtigkeitsunterschiede.
+                        
+                        f_hum = forecast['humidity'].iloc[i+1]
+                        hum_difference = hum - float(f_hum)
+                        csv_file.write(f'{hum_difference} ')
 
-
-
+                        #Berechnung der Regenunterschiede
+                        f_rain = forecast['rain'].iloc[i+1]
+                        rain_difference = rain - float(f_rain)
+                        csv_file.write(f'{rain_difference},')
+                
             csv_file.write('\n')
+
+    with open(evaluated, 'a', encoding='utf-8') as csv_file:
+        calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
+        for i in range(12):
+
+            #Bennenung der Variablen für Berechnung
+            temp_pos_diff = temp_neg_diff = hum_pos_diff = hum_neg_diff = rain_pos_diff = rain_neg_diff = 0
+            avg_temp_pos_diff = avg_temp_neg_diff = avg_hum_pos_diff = avg_hum_neg_diff = avg_rain_pos_diff = avg_rain_neg_diff = 0
+            temp_pos = temp_neg = hum_pos = hum_neg = rain_pos = rain_neg = 0
+
+            for _, row in calculation_data.iterrows():
+                time = 12 - i
+                calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].str.split(' ', expand=True)
+
+                temp = float(row['temperature'])
+                hum = float(row['humidity'])
+                rain = float(row['rain'])
+
+                #Sortieren der Differenzen in zu hoch oder zu tief
+                if temp < 0:
+                    temp_pos_diff += temp
+                    temp_pos+1
+                elif temp > 0:
+                    temp_neg_diff += temp
+                    temp_neg+1
+                
+                if hum < 0:
+                    hum_pos_diff += hum
+                    hum_pos+1
+                elif hum > 0:
+                    hum_neg_diff += hum
+                    hum_neg+1
+
+                if rain < 0:
+                    rain_pos_diff += rain
+                    rain_pos+1
+                elif rain > 0:
+                    rain_neg_diff += rain
+                    rain_neg+1
+            
+            #Berechnen der durchschnittlichen differenz
+            avg_temp_pos_diff = (temp_pos_diff/temp_pos)*-1
+            avg_temp_neg_diff = (temp_neg_diff/temp_neg)*-1
+            avg_hum_pos_diff = (hum_pos_diff/hum_pos)*-1
+            avg_hum_neg_diff = (hum_neg_diff/hum_neg)*-1
+            avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
+            avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
+
+            #Reinschreiben der durchschnittswerte
+            csv_file.write(f'\n Hier sind die durchschnittlichen Werte, Temperatur zu hoch:{avg_temp_pos_diff} zu tief:{avg_temp_neg_diff} Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/ zu tief:{avg_hum_neg_diff} und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff}')
+            
 
 
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
     #preparation()
-    sorting()
-    #calculation()
+    #sorting()
+    calculation()
     print('Alles Fertig')
 main()
