@@ -111,8 +111,11 @@ def sorting():
             date = row['Date']
             hour = row['Hour']
             date_time = date+" "+hour
-
-            csv_file.write(f'{date_time},')
+            if (date!='2024-12-27'):
+                csv_file.write(f'{date_time},')
+                counter=1
+            else:
+                counter=13
             for _, row in forecast.iterrows():
                 #Vorbereiten der Uhrzeit für Späteren Vergleich
                 f_date = row['Date']
@@ -141,10 +144,13 @@ def sorting():
                         csv_file.write(f'{f_data}')
                         counter=1
                         break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
+                    elif counter == 13:
+                        break
                     else:
                         csv_file.write(f'{f_data},')
                         counter=counter+1
-            csv_file.write('\n')
+            if date != '2024-12-27':
+                csv_file.write('\n')
     print('Vorgang beendet')
 
 def calculation():
@@ -186,7 +192,7 @@ def calculation():
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
     #preparation()
-    #sorting()
-    calculation()
+    sorting()
+    #calculation()
     print('Alles Fertig')
 main()
