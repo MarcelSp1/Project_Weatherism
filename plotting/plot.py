@@ -38,7 +38,7 @@ def plot_temp(df_temp_hmd, df_forecast):
         f_df_forecast['temperature'] = df_forecast[f'{time} Hours before'].str.split().str.get(0).astype('float64')
 
         # Gebe jedem Diagramm jeweils den passenden Titel
-        plt.title(f'Temperaturverlauf/Vorhersagenälte: {time} Stunden')
+        plt.title(f'Temperaturverlauf | Vorhersagenälte: {time} Stunden')
 
         # Plotte die Vorhersagedaten
         plt.plot(f_df_forecast['date'], f_df_forecast['temperature'], marker='o', color = colors_now, linestyle = '', ms=4, label='Vorhersage für die Temperatur')
@@ -88,7 +88,7 @@ def plot_hmd(df_temp_hmd, df_forecast):
         f_df_forecast['humidity'] = df_forecast[f'{time} Hours before'].str.split().str.get(1).astype('float64')
 
         # Gebe jedem Diagramm jeweils den passenden Titel
-        plt.title(f'Luftfeuchtigkeitsverlauf/Vorhersagenälte: {time} Stunden')
+        plt.title(f'Luftfeuchtigkeitsverlauf | Vorhersagenälte: {time} Stunden')
 
         # Plotte die Vorhersagedaten
         plt.plot(f_df_forecast['date'], f_df_forecast['humidity'], marker='o', color = colors_now, linestyle = '', ms=4, label='Vorhersage für die Luftfeuchtigkeit')
