@@ -159,7 +159,7 @@ def calculation():
 
     evaluated = 'evaluation/results/evaluated_data.csv'
     with open(evaluated, 'w', encoding='utf-8') as csv_file:
-        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
+        csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before,\n')
 
         for _, rows in forecast.iterrows():
             
@@ -209,7 +209,7 @@ def calculation():
             temp_pos = temp_neg = hum_pos = hum_neg = rain_pos = rain_neg = 1
 
             time = 12 - i
-            calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].fillna('0 0 0').astype(str).str.split(' ', expand=True)
+            calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].astype(str).str.split(' ', expand=True)
 
             for _, row in calculation_data.iterrows():
                 if row['Date & Time'] != "":
@@ -265,7 +265,7 @@ def calculation():
                 avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
 
             #Reinschreiben der durchschnittswerte
-            csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff} zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/ zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
+            csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff}/zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
                 
 
 
