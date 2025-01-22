@@ -27,7 +27,7 @@ def error_count(result):
 
 
 def preparation():
-    print("Vorgang wird gestartet.")
+    print("Stündliche Durschnitte werden berechnet.")
 
     # Dateien laden.
     data = pd.read_csv('evaluation/raw_data/modified_humidity_and_temperature.csv')
@@ -82,10 +82,11 @@ def preparation():
                     csv_file.write(f"{date},0{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
                 else:
                     csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")
-    print("Vorgang wurde erfolgreich abgeschlossen.")
+    print("Berechnung abgeschlossen.")
 
-def sorting():
-    
+def sorting(): 
+    print('Vorhersagedaten werden sortiert.')
+
     # Vorhandene Daten laden
     hourly_data_path = 'evaluation/results/hourly_data.csv'
     hourly_data = pd.read_csv(hourly_data_path)
@@ -151,9 +152,10 @@ def sorting():
                         counter=counter+1
             if date != '2024-12-27':
                 csv_file.write('\n')
-    print('Vorgang beendet')
+    print('Sortierung abgeschlossen.')
 
 def calculation():
+    print('Abweichungen werden berechnet.')
     data = pd.read_csv('evaluation/results/hourly_data.csv')
     forecast = pd.read_csv('evaluation/results/sorted_weather_data.csv')
 
@@ -271,8 +273,8 @@ def calculation():
 
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
-    #preparation()
-    #sorting()
+    preparation()
+    sorting()
     calculation()
-    print('Alles Fertig')
+    print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()
