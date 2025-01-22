@@ -199,56 +199,74 @@ def calculation():
                 
             csv_file.write('\n')
 
-    with open(evaluated, 'a', encoding='utf-8') as csv_file:
         calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
+        csv_file.write('Hier folgen die durschnittlichen Werte die, die Vorhersage drüber/drunter lag,,,,,,,,,,,,\n')
         for i in range(12):
 
             #Bennenung der Variablen für Berechnung
             temp_pos_diff = temp_neg_diff = hum_pos_diff = hum_neg_diff = rain_pos_diff = rain_neg_diff = 0
             avg_temp_pos_diff = avg_temp_neg_diff = avg_hum_pos_diff = avg_hum_neg_diff = avg_rain_pos_diff = avg_rain_neg_diff = 0
-            temp_pos = temp_neg = hum_pos = hum_neg = rain_pos = rain_neg = 0
+            temp_pos = temp_neg = hum_pos = hum_neg = rain_pos = rain_neg = 1
+
+            time = 12 - i
+            calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].fillna('0 0 0').astype(str).str.split(' ', expand=True)
 
             for _, row in calculation_data.iterrows():
-                time = 12 - i
-                calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].str.split(' ', expand=True)
+                if row['Date & Time'] != "":
+                    temp = float(row['temperature'])
 
-                temp = float(row['temperature'])
-                hum = float(row['humidity'])
-                rain = float(row['rain'])
+                    if row['humidity'] != "":
+                        if row['humidity'] is not None:
+                            hum = float(row['humidity'])
+                        else:
+                            hum = 0
+                    else:
+                        hum = 0
 
-                #Sortieren der Differenzen in zu hoch oder zu tief
-                if temp < 0:
-                    temp_pos_diff += temp
-                    temp_pos+1
-                elif temp > 0:
-                    temp_neg_diff += temp
-                    temp_neg+1
-                
-                if hum < 0:
-                    hum_pos_diff += hum
-                    hum_pos+1
-                elif hum > 0:
-                    hum_neg_diff += hum
-                    hum_neg+1
+                    if row['rain'] is not None:
+                        rain = float(row['rain'])
+                    else:
+                        rain = 0.0  # Oder ein anderer Standardwert
 
-                if rain < 0:
-                    rain_pos_diff += rain
-                    rain_pos+1
-                elif rain > 0:
-                    rain_neg_diff += rain
-                    rain_neg+1
+                    #Sortieren der Differenzen in zu hoch oder zu tief
+                    if temp < 0:
+                        temp_pos_diff += temp
+                        temp_pos+=1
+                    elif temp > 0:
+                        temp_neg_diff += temp
+                        temp_neg+=1
+                    
+                    if hum < 0:
+                        hum_pos_diff += hum
+                        hum_pos+=1
+                    elif hum > 0:
+                        hum_neg_diff += hum
+                        hum_neg=hum_neg+1
+
+                    if rain < 0:
+                        rain_pos_diff += rain
+                        rain_pos+=1
+                    elif rain > 0:
+                        rain_neg_diff += rain
+                        rain_neg+=1
             
             #Berechnen der durchschnittlichen differenz
-            avg_temp_pos_diff = (temp_pos_diff/temp_pos)*-1
-            avg_temp_neg_diff = (temp_neg_diff/temp_neg)*-1
-            avg_hum_pos_diff = (hum_pos_diff/hum_pos)*-1
-            avg_hum_neg_diff = (hum_neg_diff/hum_neg)*-1
-            avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
-            avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
+            if temp_pos!=0:
+                avg_temp_pos_diff = (temp_pos_diff/temp_pos)*-1
+            if temp_neg!=0:
+                avg_temp_neg_diff = (temp_neg_diff/temp_neg)*-1
+            if hum_pos!=0:
+                avg_hum_pos_diff = (hum_pos_diff/hum_pos)*-1
+            if hum_neg!=0:
+                avg_hum_neg_diff = (hum_neg_diff/hum_neg)*-1
+            if rain_pos!=0:
+                avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
+            if rain_neg!=0:
+                avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
 
             #Reinschreiben der durchschnittswerte
-            csv_file.write(f'\n Hier sind die durchschnittlichen Werte, Temperatur zu hoch:{avg_temp_pos_diff} zu tief:{avg_temp_neg_diff} Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/ zu tief:{avg_hum_neg_diff} und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff}')
-            
+            csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff} zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/ zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
+                
 
 
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
