@@ -265,7 +265,7 @@ def calculation():
                 avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
 
             #Reinschreiben der durchschnittswerte
-            csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff}/zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
+            csv_file.write(f'{time} Stunden vor Zeitpunkt:,Temperatur zu hoch:{avg_temp_pos_diff} | zu tief:{avg_temp_neg_diff},Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff} | zu tief:{avg_hum_neg_diff},Regen zu hoch:{avg_rain_pos_diff} | zu tief:{avg_rain_neg_diff},\n')
                 
 
 
