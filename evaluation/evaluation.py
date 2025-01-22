@@ -203,6 +203,14 @@ def calculation():
 
         calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
         csv_file.write('Hier folgen die durschnittlichen Werte die, die Vorhersage drüber/drunter lag,,,,,,,,,,,,\n')
+
+        avg_avg_temp_pos_diff = 0
+        avg_avg_temp_neg_diff = 0
+        avg_avg_hum_pos_diff = 0
+        avg_avg_hum_neg_diff = 0
+        avg_avg_rain_pos_diff = 0
+        avg_avg_rain_neg_diff = 0
+
         for i in range(12):
 
             #Bennenung der Variablen für Berechnung
@@ -255,26 +263,33 @@ def calculation():
             #Berechnen der durchschnittlichen differenz
             if temp_pos!=0:
                 avg_temp_pos_diff = (temp_pos_diff/temp_pos)*-1
+                avg_avg_temp_pos_diff += avg_temp_pos_diff
             if temp_neg!=0:
                 avg_temp_neg_diff = (temp_neg_diff/temp_neg)*-1
+                avg_avg_temp_neg_diff += avg_temp_neg_diff
             if hum_pos!=0:
                 avg_hum_pos_diff = (hum_pos_diff/hum_pos)*-1
+                avg_avg_hum_pos_diff += avg_hum_pos_diff
             if hum_neg!=0:
                 avg_hum_neg_diff = (hum_neg_diff/hum_neg)*-1
+                avg_avg_hum_neg_diff += avg_hum_neg_diff
             if rain_pos!=0:
                 avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
+                avg_avg_rain_pos_diff += avg_hum_neg_diff
             if rain_neg!=0:
                 avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
+                avg_avg_rain_neg_diff += avg_rain_neg_diff
 
             #Reinschreiben der durchschnittswerte
             csv_file.write(f'{time} Stunden vor Zeitpunkt:,Temperatur zu hoch:{avg_temp_pos_diff} | zu tief:{avg_temp_neg_diff},Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff} | zu tief:{avg_hum_neg_diff},Regen zu hoch:{avg_rain_pos_diff} | zu tief:{avg_rain_neg_diff},\n')
+        csv_file.write(f'Overall durchschnittliche Abweichung:,Temperatur zu hoch:{avg_avg_temp_pos_diff/12} | zu tief:{avg_avg_temp_neg_diff/12},Luftfeuchtigkeit zu hoch:{avg_avg_hum_pos_diff/12} | zu tief:{avg_avg_hum_neg_diff/12},Regen zu hoch:{avg_avg_rain_pos_diff/12} | zu tief:{avg_avg_rain_neg_diff/12},\n')
                 
 
 
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
-    preparation()
-    sorting()
+    #preparation()
+    #sorting()
     calculation()
     print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()
