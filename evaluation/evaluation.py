@@ -108,16 +108,16 @@ def sorting():
         
         #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
-        for _, row in hourly_data.iterrows():
+        for _, row in hourly_data.iterrows(): # Iteriere durch reale Wetterdaten
             date = row['Date']
             hour = row['Hour']
             date_time = date+" "+hour
-            if (date!='2024-12-27'):
+            if (date!='2024-12-27'): 
                 csv_file.write(f'{date_time},')
                 counter=1
             else:
                 counter=13
-            for _, row in forecast.iterrows():
+            for _, row in forecast.iterrows(): # Iteriere durch Vorhersagedaten
                 #Vorbereiten der Uhrzeit für Späteren Vergleich
                 f_date = row['Date']
                 f_hour_unfixed = row['Hour']
@@ -291,4 +291,5 @@ def main():
     preparation()
     sorting()
     calculation()
+    print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()
