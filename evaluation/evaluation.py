@@ -227,9 +227,13 @@ def calculation():
             calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].astype(str).str.split(' ', expand=True)
 
             for _, row in calculation_data.iterrows():
+                #Debugging Line so it works even when something is missing
                 if row['Date & Time'] != "":
+
+                    #Umwandeln zum rechnen
                     temp = float(row['temperature'])
 
+                    #Debugging
                     if row['humidity'] != "":
                         if row['humidity'] is not None:
                             hum = float(row['humidity'])
