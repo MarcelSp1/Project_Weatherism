@@ -288,8 +288,7 @@ def calculation():
 
 #Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
-    #preparation()
-    #sorting()
+    preparation()
+    sorting()
     calculation()
-    print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()

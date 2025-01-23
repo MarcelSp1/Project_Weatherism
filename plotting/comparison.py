@@ -68,7 +68,7 @@ def plot_hmd(df_temp_hmd, df_forecast):
     '#f5a623',  # Goldgelb
     '#ff1493']  # Tiefrosa
 
-    for i in range(12):
+    for j in range(12):
         # Definiere Parameter für die Diagramme
         plt.figure()
         plt.xlabel('Datum')
@@ -81,8 +81,8 @@ def plot_hmd(df_temp_hmd, df_forecast):
         f_df_forecast = pd.DataFrame(columns=["date", "humidity"])
         f_df_forecast['date'] = pd.to_datetime(df_forecast['Date & Time'])
         
-        time = 12 - i
-        colors_now = colors[i - 1]
+        time = 12 - j
+        colors_now = colors[j - 1]
 
         # Packe die jeweilige Spalte aus evaluation\results\sorted_weather_data.csv für die Vorhersage in den vorbereiteten Dataframe
         f_df_forecast['humidity'] = df_forecast[f'{time} Hours before'].str.split().str.get(1).astype('float64')
