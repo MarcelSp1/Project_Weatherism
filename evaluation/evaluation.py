@@ -18,7 +18,7 @@ def error_count(result):
                     log.write(error_message)
                     expected_hour += 1
                 # Überprüfung, ob die 30 Daten der Stunde komplett sind
-                if len(values['humidity']) < 29:
+                if len(values['humidity']) < 30:
                     error_message = f"Nicht genug Daten für {date} um {hour}. Uhr. Nur {len(values['humidity'])} Daten gefunden.\n"
                     log.write(error_message)
                 expected_hour += 1
@@ -111,7 +111,7 @@ def sorting():
             date = row['Date']
             hour = row['Hour']
             date_time = date+" "+hour
-            if (date!='2024-12-27'):
+            if (date!='2024-12-27'):            #Sonderfall da keine Vorhersagen 12 Stunden vorher vorhanden sind.
                 csv_file.write(f'{date_time},')
                 counter=1
             else:
@@ -132,20 +132,20 @@ def sorting():
                 #Wenn das Datum der Vorhersage dem der aktuellen Reihe Stündlicher Werte entspricht, überprüfen ob es der erste wert in der reihe ist
                 #Und wenn ja, erst eintragen wenn der erste Wert 12 Stunden vor dem Zeitpunkt ist.
                 if f_date == date and f_hour == hour:
-                    if counter==1:
-                            gen_time = datetime.strptime(gen_hour, "%H:%M:%S.%f")
+                    if counter==1: # Erste Stunde wird gesucht.
+                            gen_time = datetime.strptime(gen_hour, "%H:%M:%S.%f") #Zeit in ein Time-Objekt umwandeln.
                             hour_time = datetime.strptime(hour, "%H:%M")
                             difference_time =  hour_time - timedelta(hours=gen_time.hour, minutes=gen_time.minute)
                             difference = difference_time.strftime("%H:%M")
-                            if difference == "12:00":
+                            if difference == "12:00": # Überprüfung ob diese wirklich 12 Stunden her ist
                                 csv_file.write(f'{f_data},')
                                 counter=counter+1
                     elif counter == 12:
                         csv_file.write(f'{f_data}')
                         counter=1
-                        break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetz und es geht zur nächsten Stunde.
-                    elif counter == 13:
-                        break
+                        break #Wenn 12 Vorhersage Daten gesammelt wurden wird der Zeilenumbruch gesetzt und es geht zur nächsten Stunde.
+                    elif counter == 13: # Der Counter wird auf 13 gesetzt wenn der Datensatz zum 27.12 gehört da für diesen Tag keine 
+                        break           # Vorhersagen 12 Stunden vorhanden sind.
                     else:
                         csv_file.write(f'{f_data},')
                         counter=counter+1
@@ -154,27 +154,34 @@ def sorting():
     print('Vorgang beendet')
 
 def calculation():
+    #Einpflegen der Datein
     data = pd.read_csv('evaluation/results/hourly_data.csv')
     forecast = pd.read_csv('evaluation/results/sorted_weather_data.csv')
-
     evaluated = 'evaluation/results/evaluated_data.csv'
+
     with open(evaluated, 'w', encoding='utf-8') as csv_file:
+        #Struktur erstellen
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before,\n')
 
         for _, rows in forecast.iterrows():
             
             date_time = rows['Date & Time']
             csv_file.write(f'{date_time},')
+
+            #Ausführung für alle 12 Vorhersage Spalten
             for i in range(12):
                 time = 12 - i
+                #Vorhersage Daten trennen damit man mit diesen einfacher seperate Differenzen errechnen kann.
                 forecast[['temperature','humidity','rain']] = forecast[f'{time} Hours before'].str.split(' ', expand=True)
 
 
                 for _, row in data.iterrows():
+                    #Daten aus den gemessenen Daten einpflegen.
                     date = row['Date']
                     hour = row['Hour']
                     d_time = date+" "+hour
-
+                    
+                    #Umwandlung der Daten in floats um damit zu rechnen
                     temp = float(row['Average Temperature(in °C)'])
                     hum = float(row['Average Humidity(in %)'])
                     rain = float(row['Rainfall(in mm)'])
@@ -185,9 +192,7 @@ def calculation():
                         t_difference = temp - float(f_temp)
                         csv_file.write(f'{t_difference} ')
 
-
                         #Berechnung der Luftfeuchtigkeitsunterschiede.
-                        
                         f_hum = forecast['humidity'].iloc[i+1]
                         hum_difference = hum - float(f_hum)
                         csv_file.write(f'{hum_difference} ')
@@ -267,12 +272,10 @@ def calculation():
             #Reinschreiben der durchschnittswerte
             csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff}/zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
                 
-
-
-#Average Temperature(in °C),Average Humidity(in %),Rainfall(in mm)
 def main():
-    #preparation()
-    #sorting()
+    preparation()
+
+    sorting()
     calculation()
     print('Alles Fertig')
 main()
