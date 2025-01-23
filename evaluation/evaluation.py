@@ -27,7 +27,7 @@ def error_count(result):
 
 
 def preparation():
-    print("Vorgang wird gestartet.")
+    print("Stündliche Durschnitte werden berechnet.")
 
     # Dateien laden.
     data = pd.read_csv('evaluation/raw_data/modified_humidity_and_temperature.csv')
@@ -82,10 +82,11 @@ def preparation():
                     csv_file.write(f"{date},0{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")# rainfall mal 136,9863 rechnen um die Werte auf einen Quadratmeter zukommen.
                 else:
                     csv_file.write(f"{date},{hour}:00,{avg_temperature},{avg_humidity},{rainfall}\n")
-    print("Vorgang wurde erfolgreich abgeschlossen.")
+    print("Berechnung abgeschlossen.")
 
-def sorting():
-    
+def sorting(): 
+    print('Vorhersagedaten werden sortiert.')
+
     # Vorhandene Daten laden
     hourly_data_path = 'evaluation/results/hourly_data.csv'
     hourly_data = pd.read_csv(hourly_data_path)
@@ -107,7 +108,7 @@ def sorting():
         
         #Counter damit man später einfacher Zeilenumsprünge setzen kann
         counter = 1
-        for _, row in hourly_data.iterrows():
+        for _, row in hourly_data.iterrows(): # Iteriere durch reale Wetterdaten
             date = row['Date']
             hour = row['Hour']
             date_time = date+" "+hour
@@ -116,7 +117,7 @@ def sorting():
                 counter=1
             else:
                 counter=13
-            for _, row in forecast.iterrows():
+            for _, row in forecast.iterrows(): # Iteriere durch Vorhersagedaten
                 #Vorbereiten der Uhrzeit für Späteren Vergleich
                 f_date = row['Date']
                 f_hour_unfixed = row['Hour']
@@ -151,9 +152,10 @@ def sorting():
                         counter=counter+1
             if date != '2024-12-27':
                 csv_file.write('\n')
-    print('Vorgang beendet')
+    print('Sortierung abgeschlossen.')
 
 def calculation():
+    print('Abweichungen werden berechnet.')
     #Einpflegen der Datein
     data = pd.read_csv('evaluation/results/hourly_data.csv')
     forecast = pd.read_csv('evaluation/results/sorted_weather_data.csv')
@@ -206,6 +208,14 @@ def calculation():
 
         calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
         csv_file.write('Hier folgen die durschnittlichen Werte die, die Vorhersage drüber/drunter lag,,,,,,,,,,,,\n')
+
+        avg_avg_temp_pos_diff = 0
+        avg_avg_temp_neg_diff = 0
+        avg_avg_hum_pos_diff = 0
+        avg_avg_hum_neg_diff = 0
+        avg_avg_rain_pos_diff = 0
+        avg_avg_rain_neg_diff = 0
+
         for i in range(12):
 
             #Bennenung der Variablen für Berechnung
@@ -258,24 +268,30 @@ def calculation():
             #Berechnen der durchschnittlichen differenz
             if temp_pos!=0:
                 avg_temp_pos_diff = (temp_pos_diff/temp_pos)*-1
+                avg_avg_temp_pos_diff += avg_temp_pos_diff
             if temp_neg!=0:
                 avg_temp_neg_diff = (temp_neg_diff/temp_neg)*-1
+                avg_avg_temp_neg_diff += avg_temp_neg_diff
             if hum_pos!=0:
                 avg_hum_pos_diff = (hum_pos_diff/hum_pos)*-1
+                avg_avg_hum_pos_diff += avg_hum_pos_diff
             if hum_neg!=0:
                 avg_hum_neg_diff = (hum_neg_diff/hum_neg)*-1
+                avg_avg_hum_neg_diff += avg_hum_neg_diff
             if rain_pos!=0:
                 avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
+                avg_avg_rain_pos_diff += avg_hum_neg_diff
             if rain_neg!=0:
                 avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
+                avg_avg_rain_neg_diff += avg_rain_neg_diff
 
             #Reinschreiben der durchschnittswerte
-            csv_file.write(f'{time}. Stunde vor Zeitpunkt,Temperatur zu hoch:{avg_temp_pos_diff}/zu tief:{avg_temp_neg_diff}, Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff}/zu tief:{avg_hum_neg_diff}, und Regen zu hoch:{avg_rain_pos_diff}/zu tief:{avg_rain_neg_diff},\n')
+            csv_file.write(f'{time} Stunden vor Zeitpunkt:,Temperatur zu hoch:{avg_temp_pos_diff} | zu tief:{avg_temp_neg_diff},Luftfeuchtigkeit zu hoch:{avg_hum_pos_diff} | zu tief:{avg_hum_neg_diff},Regen zu hoch:{avg_rain_pos_diff} | zu tief:{avg_rain_neg_diff},\n')
+        csv_file.write(f'Overall durchschnittliche Abweichung:,Temperatur zu hoch:{avg_avg_temp_pos_diff/12} | zu tief:{avg_avg_temp_neg_diff/12},Luftfeuchtigkeit zu hoch:{avg_avg_hum_pos_diff/12} | zu tief:{avg_avg_hum_neg_diff/12},Regen zu hoch:{avg_avg_rain_pos_diff/12} | zu tief:{avg_avg_rain_neg_diff/12},\n')
                 
 def main():
     preparation()
-
     sorting()
     calculation()
-    print('Alles Fertig')
+    print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()
