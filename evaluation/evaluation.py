@@ -175,7 +175,10 @@ def calculation():
                         #Berechnung der Regenunterschiede
                         f_rain = forecast[f'{time}_rain'].iloc[count_row]
                         rain_difference = rain - float(f_rain)
-                        csv_file.write(f'{rain_difference},')
+                        if i == 11:
+                            csv_file.write(f'{rain_difference}')
+                        else:
+                            csv_file.write(f'{rain_difference},')
             count_row = count_row+1
             csv_file.write('\n')
         calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
