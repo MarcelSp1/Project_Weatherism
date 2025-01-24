@@ -124,6 +124,7 @@ def sorting():
             
             data = f'{temperature} {humidity} {rain}'
             result.loc[result['Datetime'] == date,[col]] = data
+    result['Datetime'] = result['Datetime'].dt.strftime('%Y-%m-%d %H:%M')
     result.to_csv(sorted, index=False)
     print('Sortierung abgeschlossen.')
 
