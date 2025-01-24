@@ -284,7 +284,7 @@ def calculation():
                 avg_avg_hum_neg_diff += avg_hum_neg_diff
             if rain_pos!=0:
                 avg_rain_pos_diff = (rain_pos_diff/rain_pos)*-1
-                avg_avg_rain_pos_diff += avg_hum_neg_diff
+                avg_avg_rain_pos_diff += avg_rain_pos_diff
             if rain_neg!=0:
                 avg_rain_neg_diff = (rain_neg_diff/rain_neg)*-1
                 avg_avg_rain_neg_diff += avg_rain_neg_diff
