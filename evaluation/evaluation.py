@@ -181,9 +181,10 @@ def calculation():
                             csv_file.write(f'{rain_difference},')
             count_row = count_row+1
             csv_file.write('\n')
-        calculation_data = pd.read_csv('evaluation/results/evaluated_data.csv')
-        print(calculation_data)
-        csv_file.write('Hier folgen die durschnittlichen Werte, die die Vorhersage drüber/drunter lag,,,,,,,,,,,,\n')
+
+    calculation_data = pd.read_csv(evaluated)
+    with open(evaluated, 'a', encoding='utf-8') as csv_file:
+        csv_file.write('Hier folgen die durschnittlichen Werte, die die Vorhersage drüber/drunter lag,,,,,,,,,,,\n')
 
         avg_avg_temp_pos_diff = 0
         avg_avg_temp_neg_diff = 0
@@ -207,18 +208,29 @@ def calculation():
             f_calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].astype(str).str.split(' ', expand=True)
 
             for _, row in f_calculation_data.iterrows():
-                # Debugging Line so it works even when something is missing
+                # Debugging Line
                 if row['Date & Time'] != "":
-
                     #Umwandeln zum rechnen inklusive Debugging
                     if row['temperature'] is not None:
                         temp = float(row['temperature'])
+                    else:
+                        temp = float(0)
+                        print(f'Fehler hinsichtlich der Temperatur. Durchlauf {i}')
+                        print(f'Aktuelle Reihe: {row}')
 
                     if row['humidity'] is not None:
                         hum = float(row['humidity'])
+                    else:
+                        hum = float(0)
+                        print(f'Fehler hinsichtlich der Luftfeuchtigkeit. Durchlauf {i}')
+                        print(f'Aktuelle Reihe: {row}')
 
                     if row['rain'] is not None:
                         rain = float(row['rain'])
+                    else:
+                        rain = float(0)
+                        print(f'Fehler hinsichtlich des Regens. Durchlauf {i}')
+                        print(f'Aktuelle Reihe: {row}')
 
                     #Sortieren der Differenzen in zu hoch oder zu tief
                     if temp < 0:
