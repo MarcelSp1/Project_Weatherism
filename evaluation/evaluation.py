@@ -139,6 +139,7 @@ def calculation():
         #Struktur erstellen
         csv_file.write('Date & Time,12 Hours before,11 Hours before,10 Hours before,9 Hours before,8 Hours before,7 Hours before,6 Hours before,5 Hours before,4 Hours before,3 Hours before,2 Hours before,1 Hours before\n')
         count_row = 0
+        #Durch alle reihen der Vorhersage itterrieren
         for _, rows in forecast.iterrows():
             
             date_time = rows['Datetime']
@@ -183,6 +184,7 @@ def calculation():
             csv_file.write('\n')
 
     calculation_data = pd.read_csv(evaluated)
+    #Erneutes Öffnen der Datei damit alle infos gespeichert sind.
     with open(evaluated, 'a', encoding='utf-8') as csv_file:
         csv_file.write('Hier folgen die durschnittlichen Werte, die die Vorhersage drüber/drunter lag,,,,,,,,,,,\n')
 
@@ -205,6 +207,7 @@ def calculation():
             temp_pos = temp_neg = hum_pos = hum_neg = rain_pos = rain_neg = 0
 
             time = 12 - i
+            #Jede Spalte wird nochmal in 3 weitere aufgeteilt damit mit diesen Spererat gerechnet werden kann.
             f_calculation_data[['temperature','humidity','rain']] = calculation_data[f'{time} Hours before'].astype(str).str.split(' ', expand=True)
 
             for _, row in f_calculation_data.iterrows():
@@ -279,8 +282,8 @@ def calculation():
         csv_file.write(f'Overall durchschnittliche Abweichung:,Temperatur zu hoch:{avg_avg_temp_pos_diff/12} | zu tief:{avg_avg_temp_neg_diff/12},Luftfeuchtigkeit zu hoch:{avg_avg_hum_pos_diff/12} | zu tief:{avg_avg_hum_neg_diff/12},Regen zu hoch:{avg_avg_rain_pos_diff/12} | zu tief:{avg_avg_rain_neg_diff/12},,,,,,,,,,\n')
                 
 def main():
-    #preparation()
-    #sorting()
+    preparation()
+    sorting()
     calculation()
     print('Alles Fertig. Ergebnisse finden sich in evaluation/results/evaluated_data.csv')
 main()
