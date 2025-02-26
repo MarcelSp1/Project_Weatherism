@@ -9,7 +9,7 @@ def initialize_device():
     try:
         device_port = adafruit_dht.DHT22(board.D2) # D2 gibt den GPiO Pin an
     except Exception as e:
-        print(f("Der DHT22 konnte nicht korrekt initialisiert werden. Es gab folgenden Fehler: {e}"))
+        print(f"Der DHT22 konnte nicht korrekt initialisiert werden. Es gab folgenden Fehler: {e}")
 
     return device_port
 
