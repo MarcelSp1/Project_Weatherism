@@ -14,8 +14,8 @@ def defineParam():
 
 	# Definiere, für welchen Ort und welche Daten abgerufen werden
 	params = {
-		"latitude": 53.03,
-		"longitude": 8.52,
+		"latitude": 0.00,
+		"longitude": 0.00,
 		"hourly": ["temperature_2m", "relative_humidity_2m", "rain"],
 		"forecast_days": 2
 	}
